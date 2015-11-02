@@ -12,12 +12,18 @@ public class PentrisGameBoard {
 	/** Defines game Board */
 	private int[][] pentrisGameBoard;
 	/** Defines default X coordinate for new shapes insertions */
-	private final int defaultXpoint = 5;
+	private int defaultXpoint;
 	/** Defines default Y coordinate for new shapes insertions */
-	private final int defaultYpoint = 4;
-	/** Defines/keeps track X coordinate for current active shape */
+	private int defaultYpoint;
+	/**
+	 * Defines/keeps track X coordinate for current active shapes with reference
+	 * to its middle
+	 */
 	private int shapeCoordX = defaultXpoint;
-	/** Defines/keeps track Y coordinate for current active shape */
+	/**
+	 * Defines/keeps track Y coordinate for current active shape with reference
+	 * to its bottom row
+	 */
 	private int shapeCoordY = defaultYpoint;
 	/** Defines the current active shape */
 	private int[][] shapeActive = { { 0, 0, 0 }, { 0, 0, 0 } };
@@ -51,17 +57,21 @@ public class PentrisGameBoard {
 	 */
 	private final int gameOverLimit = 5;
 	// TODO fix gameOverLimit to set automatically in constructor
-	/**Boolean that graphs use to show game over*/
-	private boolean gameOver= false;
+	/** Boolean that graphs use to show game over */
+	private boolean gameOver = false;
 
 	/**
-	 * Constructor makes a game board for pentris of the given
+	 * CONSTRUCTOR makes a game board for pentris of the given
 	 * coordinates,marking the boarder with integer value "99" and starts the
 	 * game
 	 */
 	public PentrisGameBoard(int xCoord, int yCoord) {
 		x = xCoord + 2;
 		y = yCoord + gameOverLimit + 1;
+		defaultXpoint = x / 2;
+		defaultYpoint = gameOverLimit - 1;
+		shapeCoordX = defaultXpoint;
+		shapeCoordY = defaultYpoint;
 		pentrisGameBoard = new int[y][x];
 		for (int i = 0; i < x; i++) {
 			this.pentrisGameBoard[y - 1][i] = 99;
@@ -80,7 +90,7 @@ public class PentrisGameBoard {
 	 * match the board width and height(top side)
 	 */
 	public void insertShapeIntoPos() {
-
+		shapeMidPosition = (int) ((shapeActive[0].length - 1) / 2);
 		if (shapeCoordX - shapeMidPosition < 1) {
 			shapeCoordX = 1 + shapeMidPosition;
 		}
@@ -157,6 +167,7 @@ public class PentrisGameBoard {
 	 * ends the game if board is filled
 	 */
 	public void moveShapeDownStep() {
+
 		deleteShapeFromPos();
 		shapeCoordY++;
 		if (checkShapePlacement()) {
@@ -175,7 +186,7 @@ public class PentrisGameBoard {
 				System.out.println("gameOver");
 				yAxisMovetimer.cancel();
 				stopXaxisMovement = true;
-				gameOver=true;
+				gameOver = true;
 			}
 
 		}
@@ -205,17 +216,18 @@ public class PentrisGameBoard {
 	 * its previous position if not
 	 */
 	public void moveShapeLeftStep() {
-
-		if (shapeCoordX - shapeMidPosition < 1) {
-			shapeCoordX = 1 + shapeMidPosition;
-		}
-		deleteShapeFromPos();
-		shapeCoordX--;
-		if (checkShapePlacement()) {
-			insertShapeIntoPos();
-		} else {
-			shapeCoordX++;
-			insertShapeIntoPos();
+		if (shapeCoordY >= gameOverLimit) {
+			if (shapeCoordX - shapeMidPosition < 1) {
+				shapeCoordX = 1 + shapeMidPosition;
+			}
+			deleteShapeFromPos();
+			shapeCoordX--;
+			if (checkShapePlacement()) {
+				insertShapeIntoPos();
+			} else {
+				shapeCoordX++;
+				insertShapeIntoPos();
+			}
 		}
 	}
 
@@ -224,21 +236,22 @@ public class PentrisGameBoard {
 	 * its previous position if not
 	 */
 	public void moveShapeRightStep() {
+		if (shapeCoordY >= gameOverLimit) {
 
-		if (shapeCoordX - shapeMidPosition + shapeActive[0].length > pentrisGameBoard[0].length - 1) {
-			shapeCoordX = pentrisGameBoard[0].length - shapeActive[0].length
-					+ shapeMidPosition - 1;
+			if (shapeCoordX - shapeMidPosition + shapeActive[0].length > pentrisGameBoard[0].length - 1) {
+				shapeCoordX = pentrisGameBoard[0].length
+						- shapeActive[0].length + shapeMidPosition - 1;
+			}
+			deleteShapeFromPos();
+			shapeCoordX++;
+			if (checkShapePlacement()) {
+				insertShapeIntoPos();
+
+			} else {
+				shapeCoordX--;
+				insertShapeIntoPos();
+			}
 		}
-		deleteShapeFromPos();
-		shapeCoordX++;
-		if (checkShapePlacement()) {
-			insertShapeIntoPos();
-
-		} else {
-			shapeCoordX--;
-			insertShapeIntoPos();
-		}
-
 	}
 
 	/***/
@@ -401,7 +414,11 @@ public class PentrisGameBoard {
 	public boolean xAxisMovement() {
 		return stopXaxisMovement;
 	}
-/**Used to  move the shapes that need to fall down after the player accomplishes a full row*/
+
+	/**
+	 * Used to move the shapes that need to fall down after the player
+	 * accomplishes a full row
+	 */
 	public void copyBoardDown(int yCoordRowDeleted) {
 		for (int y = yCoordRowDeleted; y >= 1; y--)
 			for (int j = 1; j < pentrisGameBoard[0].length - 1; j++) {
@@ -410,21 +427,39 @@ public class PentrisGameBoard {
 
 			}
 	}
-/** exports the current state of the game board as 2D array  to be represented with graphics*/
+
+	/**
+	 * exports the current state of the game board as 2D array to be represented
+	 * with graphics
+	 */
 	public int[][] exportPentrisGraphics() {
 		int[][] graphicRep = ArraysMethods.deepCopy2DArray(pentrisGameBoard);
 		return graphicRep;
 	}
-/**returns the number of rows from the top of the board that  if filled game finishes*/
+
+	/**
+	 * returns the number of rows from the top of the board that if filled game
+	 * finishes
+	 */
 	public int getGameOverLimit() {
 		return gameOverLimit;
 	}
-	/**method to tell the panel to  draw gameOver picture */
-	public boolean graphGameOver(){
+
+	/** method to tell the panel to draw gameOver picture */
+	public boolean graphGameOver() {
 		return gameOver;
 	}
-	/** returns the score value of the gameBoard  multiplied by 100*/
-	public int getScoreForGraphs(){
-		return score*100;
+
+	/** returns the score value of the gameBoard multiplied by 100 */
+	public int getScoreForGraphs() {
+		return score * 100;
+	}
+
+	public int getPlayingDimX() {
+		return x - 2;
+	}
+
+	public int getPlayingDimY() {
+		return y - gameOverLimit - 1;
 	}
 }

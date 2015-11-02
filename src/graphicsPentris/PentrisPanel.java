@@ -118,6 +118,7 @@ public class PentrisPanel extends JPanel {
 		public void keyTyped(KeyEvent e) {
 		}
 
+		
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				thisGame.moveShapeRightStep();
@@ -131,15 +132,24 @@ public class PentrisPanel extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 				thisGame.moveShapeDownStep();
 			}
-			//Starts the game
+			// Starts the game
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				if(mainMenuPentris==true){
-				mainMenuPentris=false;
-				thisGame.startGameTimer();
+				if (mainMenuPentris == true) {
+					mainMenuPentris = false;
+					thisGame.startGameTimer();
 				}
+
 			}
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				if (thisGame.graphGameOver()) {
+
+					setMainMenuInterface();
+					thisGame = new PentrisGameBoard(thisGame.getPlayingDimX(), thisGame.getPlayingDimY()) ;
+
+				}
 		}
-		//need for no exceptions
+
+		// need for no exceptions
 		public void keyReleased(KeyEvent e) {
 		}
 	}
@@ -216,6 +226,10 @@ public class PentrisPanel extends JPanel {
 			}
 
 		}
+	}
+	
+	public void setMainMenuInterface(){
+		 mainMenuPentris= true;
 	}
 
 }

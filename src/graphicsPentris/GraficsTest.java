@@ -5,7 +5,7 @@ import java.util.TimerTask;
 public class GraficsTest {
 
 	public static void main(String[] args) {
-		PentrisGameBoard game = new PentrisGameBoard(5, 12);
+		PentrisGameBoard game = new PentrisGameBoard(6, 10);
 		PentrisFrame runGame = new PentrisFrame(game);
 		
 
