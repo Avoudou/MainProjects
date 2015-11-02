@@ -363,14 +363,14 @@ public class PentrisGameBoard {
 
 	}
 
-	/** return the x length of the board to represent */
+	/** returns the x dimension of the gameBoard to represent graphically */
 	public int getGraphX() {
 		return x;
 	}
 
-	/** returns the coordinate y-axis of where the chosen shape is/will appear */
+	/** returns the y dimension of the gameBoard to represent graphically */
 	public int getGraphY() {
-		return y - 5;
+		return y - gameOverLimit;
 	}
 
 	/** sets the coordinate in x-axis of where the chosen shape is/will appear */
@@ -401,7 +401,7 @@ public class PentrisGameBoard {
 	public boolean xAxisMovement() {
 		return stopXaxisMovement;
 	}
-
+/**Used to  move the shapes that need to fall down after the player accomplishes a full row*/
 	public void copyBoardDown(int yCoordRowDeleted) {
 		for (int y = yCoordRowDeleted; y >= 1; y--)
 			for (int j = 1; j < pentrisGameBoard[0].length - 1; j++) {
@@ -410,12 +410,12 @@ public class PentrisGameBoard {
 
 			}
 	}
-
+/** exports the current state of the game board as 2D array  to be represented with graphics*/
 	public int[][] exportPentrisGraphics() {
 		int[][] graphicRep = ArraysMethods.deepCopy2DArray(pentrisGameBoard);
 		return graphicRep;
 	}
-
+/**returns the number of rows from the top of the board that  if filled game finishes*/
 	public int getGameOverLimit() {
 		return gameOverLimit;
 	}
@@ -423,6 +423,7 @@ public class PentrisGameBoard {
 	public boolean graphGameOver(){
 		return gameOver;
 	}
+	/** returns the score value of the gameBoard  multiplied by 100*/
 	public int getScoreForGraphs(){
 		return score*100;
 	}
