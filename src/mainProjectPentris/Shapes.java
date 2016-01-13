@@ -1,4 +1,4 @@
-package graphicsPentris;
+package mainProjectPentris;
 import java.util.ArrayList;
 
 public class Shapes
@@ -9,6 +9,7 @@ public class Shapes
                 //creating an arraylist with all pentominoes
                 private ArrayList<ArrayList<int[][]>> pentominoList = new ArrayList<ArrayList<int[][]>>();
                 private ArrayList<int[][]> pentrisShapes= new   ArrayList<int[][]>() ;
+                private ArrayList<Integer> optiCoordsList= new ArrayList<Integer>();
                 
                 //creating pentomino arraylists with all possible rotations
                private ArrayList<int[][]> p = new ArrayList<int[][]>();
@@ -98,6 +99,10 @@ public class Shapes
                 private int[][] l6 = { { 12, 12, 12, 12 }, { 0, 0, 0, 12 } };
                 private int[][] l7 = { { 12, 0, 0, 0 }, { 12, 12, 12, 12 } };
                 private int[][] l8 = { { 12, 12, 12, 12 }, { 12, 0, 0, 0 } };
+				
+                
+                
+                private ArrayList<int[][]> optiData= new ArrayList<int[][]>();
                 
                 //adding all rotations in rotation lists
                 public Shapes(){
@@ -208,7 +213,35 @@ public class Shapes
                 pentrisShapes.add(n2);
                 pentrisShapes.add(l1);
                 pentrisShapes.add(l2);
+                //optidata
+                optiData.add(v2);//kaguria beni to proto sto constructor
+                optiData.add(v2);
+                optiData.add(z2);
+                optiData.add(f8);
                 
+                optiData.add(n5);
+                optiData.add(p2);
+                optiData.add(w3);
+                optiData.add(t2);
+                optiData.add(y2);
+                optiData.add(i1);
+                optiData.add(x1);
+                optiData.add(u2);
+                optiData.add(l1);
+                
+                
+                optiCoordsList.add(77);
+                optiCoordsList.add(3);
+                optiCoordsList.add(4);
+                optiCoordsList.add(0);
+                optiCoordsList.add(3);
+                optiCoordsList.add(77);
+                optiCoordsList.add(77);
+                optiCoordsList.add(3);
+                optiCoordsList.add(0);
+                optiCoordsList.add(77);
+                optiCoordsList.add(77);
+                optiCoordsList.add(0);
                 }
                 
 
@@ -219,6 +252,13 @@ public class Shapes
         
         public  ArrayList<int[][]> givePentrisData(){
         	return pentrisShapes;
+        }
+        public ArrayList<int[][]> giveOptiData(){
+        	return optiData;
+        	
+        }
+        public ArrayList<Integer> optiCoords(){
+        	return optiCoordsList;
         }
         
 }       

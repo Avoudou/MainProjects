@@ -1,4 +1,4 @@
-package graphicsPentris;
+package mainProjectPentris;
 public class ArraysMethods {
 	/** Returns a new identical array of the input 2D array */
 	public static int[][] deepCopy2DArray(int[][] array2D) {
